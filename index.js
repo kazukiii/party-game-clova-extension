@@ -1,25 +1,23 @@
 const clova = require('@line/clova-cek-sdk-nodejs');
 const express = require('express');
 
-
 const clovaSkillHandler = clova.Client
     .configureSkill()
     // スキルの起動リクエスト
     .onLaunchRequest(responseHelper => {
-        express.use(express.static(__dirname+'/asset'));
-        responseHelper.setSimpleSpeech([{
+        let speechList = [];
+        speechList.push({
             lang: 'ja',
             type: 'PlainText',
-            value: 'ようこそ、パーティーゲームへ',
-        }]);
-        responseHelper.setSimpleSpeech(
-            clova.SpeechBuilder.createSpeechUrl('https://80d5333d.ngrok.io/asset/yeah.mp3')
-        );
-        responseHelper.setSimpleSpeech([{
+            value: 'ようこそ、パーティーゲームへ'
+        });
+        speechList.push(clova.SpeechBuilder.createSpeechUrl('https://drive.google.com/open?id=12M46tWbNxiFG_DKvvdfgVPv_HdnnxauE'));
+        speechList.push({
             lang: 'ja',
             type: 'PlainText',
             value: 'どのゲームにしますか？今は王様ゲームができます',
-        }]);
+        })
+        responseHelper.setSpeechList(speechList);
     })
     // カスタムインテント or ビルトインインテント
     .onIntentRequest(responseHelper => {
