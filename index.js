@@ -89,7 +89,7 @@ const clovaSkillHandler = clova.Client
                 speech = {
                     lang: 'ja',
                     type: 'PlainText',
-                    value: 'a'
+                    value: 'このスキルではミニゲームを用意しています、今は王様ゲームがあります。どのゲームにしますか'
                 }
                 responseHelper.setSimpleSpeech(speech)
                 responseHelper.setSimpleSpeech(speech, true)
@@ -175,7 +175,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: 'me.kazumatsu.party-game.clova.extension'//process.env.APPLICATION_ID
+    applicationId: process.env.APPLICATION_ID
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
