@@ -87,7 +87,7 @@ const clovaSkillHandler = clova.Client
                 speech = {
                     lang: 'ja',
                     type: 'PlainText',
-                    value: 'a'
+                    value: 'このスキルではミニゲームを用意しています、今は王様ゲームがあります。どのゲームにしますか'
                 }
                 responseHelper.setSimpleSpeech(speech)
                 responseHelper.setSimpleSpeech(speech, true)
