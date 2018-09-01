@@ -6,7 +6,7 @@ const clovaSkillHandler = clova.Client
     .configureSkill()
     // スキルの起動リクエスト
     .onLaunchRequest(responseHelper => {
-        responseHelper.setSpeechList([{
+        responseHelper.setSimpleSpeech([{
             lang: 'ja',
             type: 'PlainText',
             value: 'ようこそ、パーティーゲームへ',
@@ -14,7 +14,7 @@ const clovaSkillHandler = clova.Client
         responseHelper.setSimpleSpeech(
             clova.SpeechBuilder.createSpeechUrl('https://drive.google.com/open?id=12M46tWbNxiFG_DKvvdfgVPv_HdnnxauE')
         );
-        responseHelper.setSpeechList([{
+        responseHelper.setSimpleSpeech([{
             lang: 'ja',
             type: 'PlainText',
             value: 'どのゲームにしますか？今は王様ゲームができます',
