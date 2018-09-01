@@ -3,24 +3,23 @@ const express = require('express');
 const config = require('./config/config');
 let number;
 
-
 const clovaSkillHandler = clova.Client
     .configureSkill()
     // スキルの起動リクエスト
     .onLaunchRequest(responseHelper => {
-        responseHelper.setSpeechList([{
+        let speechList = [];
+        speechList.push({
             lang: 'ja',
             type: 'PlainText',
-            value: 'ようこそ、パーティーゲームへ',
-        }]);
-        responseHelper.setSimpleSpeech(
-            clova.SpeechBuilder.createSpeechUrl('https://drive.google.com/open?id=12M46tWbNxiFG_DKvvdfgVPv_HdnnxauE')
-        );
-        responseHelper.setSpeechList([{
+            value: 'ようこそ、パーティーゲームへ'
+        });
+        speechList.push(clova.SpeechBuilder.createSpeechUrl('https://s3-ap-northeast-1.amazonaws.com/clova-party-game/yeah.mp3'));
+        speechList.push({
             lang: 'ja',
             type: 'PlainText',
             value: 'どのゲームにしますか？今は王様ゲームができます',
-        }]);
+        })
+        responseHelper.setSpeechList(speechList);
     })
     // カスタムインテント or ビルトインインテント
     .onIntentRequest(responseHelper => {
@@ -130,14 +129,13 @@ const clovaSkillHandler = clova.Client
                     responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
-                    speech = {
+                    speechList.push(clova.SpeechBuilder.createSpeechUrl('https://s3-ap-northeast-1.amazonaws.com/clova-party-game/yeah.mp3'));
+                    speechList.push({
                         lang: 'ja',
                         type: 'PlainText',
                         value: 'いいですね！次の命令にいきますか？'
-                    }
-
-                    responseHelper.setSimpleSpeech(speech)
-                    responseHelper.setSimpleSpeech(speech, true)
+                    })
+                    responseHelper.setSpeechList(speechList);
                     break;
 
                 } else {
