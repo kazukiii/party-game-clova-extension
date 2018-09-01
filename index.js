@@ -123,14 +123,14 @@ const clovaSkillHandler = clova.Client
                     responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
-                    speech = {
+                    let speechList = [];
+                    speechList.push(clova.SpeechBuilder.createSpeechUrl('https://s3-ap-northeast-1.amazonaws.com/clova-party-game/yeah.mp3'));
+                    speechList.push({
                         lang: 'ja',
                         type: 'PlainText',
                         value: 'いいですね！次の命令にいきますか？'
-                    }
-
-                    responseHelper.setSimpleSpeech(speech)
-                    responseHelper.setSimpleSpeech(speech, true)
+                    })
+                    responseHelper.setSpeechList(speechList);
                     break;
 
                 } else {
