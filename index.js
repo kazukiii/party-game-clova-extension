@@ -1,5 +1,6 @@
 const clova = require('@line/clova-cek-sdk-nodejs');
 const express = require('express');
+const config = require('./config/config');
 let number;
 
 
@@ -175,7 +176,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: 'me.kazumatsu.party-game.clova.extension'
+    applicationId: config.application_id
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
