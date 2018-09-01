@@ -28,7 +28,7 @@ const clovaSkillHandler = clova.Client
         switch (intent) {
             // ゲームの種類を取得
             case 'typeOfGame':
-                
+
                 // Slotに登録されていないゲーム名はnullになる
                 if (slots.gameType == null) {
                     speech = {
@@ -48,9 +48,9 @@ const clovaSkillHandler = clova.Client
                 }]
                 responseHelper.setSpeechList(speech)
                 responseHelper.setSpeechList(speech, true)
-                
+
                 break;
-            
+
             // ゲームに参加する人数を取得する
             case 'numberOfPeople':
                 // 人数を取得
@@ -97,7 +97,7 @@ const clovaSkillHandler = clova.Client
             // ビルトインインテント。ユーザーによるインプットが肯定/否定/キャンセルのみであった場合
             case 'Clova.YesIntent':
                 if(!responseHelper.getSessionAttributes()){
-                    break;   
+                    break;
                 }
 
                 const state = responseHelper.getSessionAttributes().state;
@@ -105,13 +105,15 @@ const clovaSkillHandler = clova.Client
                 if(state == 'ready'){
                     // stateを指令モードに書き換える
                     const sessionObject = { state: 'command' };
+                    let activeNum = Math.floor(Math.random() * slots.clovaNumber) + 1
+                    let receiveNum = Math.floor(Math.random() * slots.clovaNumber) + 1
                     responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
                     speech = {
                         lang: 'ja',
                         type: 'PlainText',
-                        value: 'ではいきますよー、１番と２番がLINEを交換する！１０秒以内に実行してください！いーち，にーい，さーん，しーい，ごーお，ろーく，なーな，はーち，きゅーう，じゅーう！実行できましたか？'
+                        value: `ではいきますよー、${activeNum}番と${receiveNum}番がLINEを交換する！１０秒以内に実行してください！いーち，にーい，さーん，しーい，ごーお，ろーく，なーな，はーち，きゅーう，じゅーう！実行できましたか？`
                     }
 
                     responseHelper.setSimpleSpeech(speech)
@@ -170,7 +172,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: ''//process.env.APPLICATION_ID
+    applicationId: 'me.kazumatsu.party-game.clova.extension'//process.env.APPLICATION_ID
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
