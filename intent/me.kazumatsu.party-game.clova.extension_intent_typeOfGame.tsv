@@ -1,0 +1,14 @@
+[INTENT SLOT]
+gameType	typeOfGame
+
+[INTENT EXPRESSION]
+<gameType>王様ゲーム</gameType>
+<gameType>王様ゲーム</gameType>がやりたい
+<gameType>王様ゲーム</gameType>にする
+じゃあ<gameType>王様ゲーム</gameType>
+<gameType>王様ゲーム</gameType>やろう
+<gameType>王様ゲーム</gameType>したい
+<gameType>王様ゲーム</gameType>いえーい
+じゃあそれ
+いいよ
+OK

@@ -1,0 +1,14 @@
+[INTENT SLOT]
+clovaNumber	CLOVA.NUMBER
+
+[INTENT EXPRESSION]
+<clovaNumber>4</clovaNumber>
+<clovaNumber>5</clovaNumber>人
+<clovaNumber>3</clovaNumber>人だよ
+<clovaNumber>2</clovaNumber>人です
+<clovaNumber>2</clovaNumber>人でーす
+<clovaNumber>1</clovaNumber>人でやる
+<clovaNumber>6</clovaNumber>人で
+<clovaNumber>7</clovaNumber>人いる
+<clovaNumber>8</clovaNumber>人かな
+えっと<clovaNumber>9</clovaNumber>人
