@@ -1,5 +1,7 @@
 const clova = require('@line/clova-cek-sdk-nodejs');
 const express = require('express');
+const config = require('./config/config');
+let number;
 
 const clovaSkillHandler = clova.Client
     .configureSkill()
@@ -27,7 +29,7 @@ const clovaSkillHandler = clova.Client
         switch (intent) {
             // ゲームの種類を取得
             case 'typeOfGame':
-                
+
                 // Slotに登録されていないゲーム名はnullになる
                 if (slots.gameType == null) {
                     speech = {
@@ -47,9 +49,9 @@ const clovaSkillHandler = clova.Client
                 }]
                 responseHelper.setSpeechList(speech)
                 responseHelper.setSpeechList(speech, true)
-                
+
                 break;
-            
+
             // ゲームに参加する人数を取得する
             case 'numberOfPeople':
                 // 人数を取得
@@ -70,6 +72,7 @@ const clovaSkillHandler = clova.Client
                 // sessionを使う
                 const sessionObject = { state: 'ready' };
                 responseHelper.setSessionAttributes(sessionObject)
+                number = slots.clovaNumber;
 
                 speech = [{
                     lang: 'ja',
@@ -86,7 +89,7 @@ const clovaSkillHandler = clova.Client
                 speech = {
                     lang: 'ja',
                     type: 'PlainText',
-                    value: 'a'
+                    value: 'このスキルではミニゲームを用意しています、今は王様ゲームがあります。どのゲームにしますか'
                 }
                 responseHelper.setSimpleSpeech(speech)
                 responseHelper.setSimpleSpeech(speech, true)
@@ -96,21 +99,24 @@ const clovaSkillHandler = clova.Client
             // ビルトインインテント。ユーザーによるインプットが肯定/否定/キャンセルのみであった場合
             case 'Clova.YesIntent':
                 if(!responseHelper.getSessionAttributes()){
-                    break;   
+                    break;
                 }
 
                 const state = responseHelper.getSessionAttributes().state;
-                console.log(state)
+
                 if(state == 'ready'){
                     // stateを指令モードに書き換える
                     const sessionObject = { state: 'command' };
+                    console.log(slots.clovaNumber);
+                    let activeNum = Math.floor(Math.random() * number) + 1
+                    let receiveNum = Math.floor(Math.random() * number) + 1
                     responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
                     speech = {
                         lang: 'ja',
                         type: 'PlainText',
-                        value: 'ではいきますよー、１番と２番がLINEを交換する！１０秒以内に実行してください！いーち，にーい，さーん，しーい，ごーお，ろーく，なーな，はーち，きゅーう，じゅーう！実行できましたか？'
+                        value: `ではいきますよー、${activeNum}番と${receiveNum}番がLINEを交換する！１０秒以内に実行してください！いーち，にーい，さーん，しーい，ごーお，ろーく，なーな，はーち，きゅーう，じゅーう！実行できましたか？`
                     }
 
                     responseHelper.setSimpleSpeech(speech)
@@ -169,7 +175,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: process.env.APPLICATION_ID
+    applicationId: config.application_id
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
