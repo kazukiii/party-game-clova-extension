@@ -6,13 +6,14 @@ const clovaSkillHandler = clova.Client
     .configureSkill()
     // スキルの起動リクエスト
     .onLaunchRequest(responseHelper => {
+        express.use(express.static(__dirname+'/asset'));
         responseHelper.setSimpleSpeech([{
             lang: 'ja',
             type: 'PlainText',
             value: 'ようこそ、パーティーゲームへ',
         }]);
         responseHelper.setSimpleSpeech(
-            clova.SpeechBuilder.createSpeechUrl('../asset/yeah.mp3')
+            clova.SpeechBuilder.createSpeechUrl('https://80d5333d.ngrok.io/asset/yeah.mp3')
         );
         responseHelper.setSimpleSpeech([{
             lang: 'ja',
