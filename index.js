@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // session管理
-var state;
+let state;
 
 const clovaSkillHandler = clova.Client
     .configureSkill()
@@ -21,6 +21,7 @@ const clovaSkillHandler = clova.Client
         const intent = responseHelper.getIntentName();
         let speech;
         let slots;
+        let state;
         switch (intent) {
             // ユーザーのインプットが星座だと判別された場合。第2引数はreprompt(入力が行われなかった場合の聞き返し)をするか否か。省略可。
             case 'typeOfGame':
@@ -89,7 +90,7 @@ const clovaSkillHandler = clova.Client
                 responseHelper.setSpeechList(speech, true)
 
                 break;
-            
+
             // ビルトインインテント。ユーザーによるインプットが使い方のリクエストと判別された場合
             case 'Clova.GuideIntent':
                 speech = {
@@ -144,6 +145,13 @@ const clovaSkillHandler = clova.Client
                     responseHelper.setSimpleSpeech(speech, true)
                 }
             case 'Clova.NoIntent':
+                if (state === 'skip') {
+                  speech = [{
+                      lang: 'ja',
+                      type: 'PlainText',
+                      value: `続けます`
+                  }]
+                }
             case 'Clova.CancelIntent':
                 speech = {
                     lang: 'ja',
@@ -163,7 +171,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: 
+    applicationId:
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
