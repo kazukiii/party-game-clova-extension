@@ -1,7 +1,5 @@
 const clova = require('@line/clova-cek-sdk-nodejs');
 const express = require('express');
-const bodyParser = require('body-parser');
-
 
 const clovaSkillHandler = clova.Client
     .configureSkill()
@@ -10,7 +8,7 @@ const clovaSkillHandler = clova.Client
         let request = [{
             lang: 'ja',
             type: 'PlainText',
-            value: 'ようこそ、どのゲームにしますか？　今は王様ゲームができます',
+            value: 'ようこそ、どのゲームにしますか？今は王様ゲームができます',
         }]
         responseHelper.setSpeechList(request);
     })
@@ -18,18 +16,17 @@ const clovaSkillHandler = clova.Client
     .onIntentRequest(responseHelper => {
         const intent = responseHelper.getIntentName();
         let speech;
-        let slots;
+        const slots = responseHelper.getSlots();
         switch (intent) {
-            // ユーザーのインプットが星座だと判別された場合。第2引数はreprompt(入力が行われなかった場合の聞き返し)をするか否か。省略可。
+            // ゲームの種類を取得
             case 'typeOfGame':
-                // 星座を取得
-                slots = responseHelper.getSlots();
+                
                 // Slotに登録されていないゲーム名はnullになる
                 if (slots.gameType == null) {
                     speech = {
                         lang: 'ja',
                         type: 'PlainText',
-                        value: `ゲーム名に誤りがあります。他のゲーム名でお試し下さい。`
+                        value: `王様ゲームを開始します、何人でやりますか？`
                     }
                     responseHelper.setSimpleSpeech(speech)
                     responseHelper.setSimpleSpeech(speech, true)
@@ -51,11 +48,9 @@ const clovaSkillHandler = clova.Client
                 responseHelper.setSpeechList(speech, true)
 
                 break;
+            
+            // ゲームに参加する人数を取得する
             case 'numberOfPeople':
-                // 人数を取得
-                slots = responseHelper.getSlots();
-                // Slotに登録されていないゲーム名はnullになる
-                console.log(slots.clovaNumber);
                 if (slots.clovaNumber == null) {
                     speech = {
                         lang: 'ja',
@@ -64,12 +59,6 @@ const clovaSkillHandler = clova.Client
                     }
                     responseHelper.setSimpleSpeech(speech)
                     responseHelper.setSimpleSpeech(speech, true)
-                    // 下記でも可
-                    /*
-                    responseHelper.setSimpleSpeech(
-                      clova.SpeechBuilder.createSpeechText(`星座に誤りがあります。他の星座でお試し下さい。`)
-                    );
-                    */
                     break;
                 }
 
@@ -119,7 +108,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: 
+    applicationId: ''//process.env.APPLICATION_ID
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
