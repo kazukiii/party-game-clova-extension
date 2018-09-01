@@ -1,5 +1,6 @@
 const clova = require('@line/clova-cek-sdk-nodejs');
 const express = require('express');
+let number;
 
 
 const clovaSkillHandler = clova.Client
@@ -71,6 +72,7 @@ const clovaSkillHandler = clova.Client
                 // sessionを使う
                 const sessionObject = { state: 'ready' };
                 responseHelper.setSessionAttributes(sessionObject)
+                number = slots.clovaNumber;
 
                 speech = [{
                     lang: 'ja',
@@ -101,12 +103,13 @@ const clovaSkillHandler = clova.Client
                 }
 
                 const state = responseHelper.getSessionAttributes().state;
-                console.log(state)
+                
                 if(state == 'ready'){
                     // stateを指令モードに書き換える
                     const sessionObject = { state: 'command' };
-                    let activeNum = Math.floor(Math.random() * slots.clovaNumber) + 1
-                    let receiveNum = Math.floor(Math.random() * slots.clovaNumber) + 1
+                    console.log(slots.clovaNumber);
+                    let activeNum = Math.floor(Math.random() * number) + 1
+                    let receiveNum = Math.floor(Math.random() * number) + 1
                     responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
