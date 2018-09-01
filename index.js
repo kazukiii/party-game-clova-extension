@@ -103,7 +103,7 @@ const clovaSkillHandler = clova.Client
                 }
 
                 const state = responseHelper.getSessionAttributes().state;
-                
+
                 if(state == 'ready'){
                     // stateを指令モードに書き換える
                     const sessionObject = { state: 'command' };
@@ -175,7 +175,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: process.env.APPLICATION_ID
+    applicationId: 'me.kazumatsu.party-game.clova.extension'
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
