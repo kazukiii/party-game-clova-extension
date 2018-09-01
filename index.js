@@ -51,6 +51,9 @@ const clovaSkillHandler = clova.Client
             
             // ゲームに参加する人数を取得する
             case 'numberOfPeople':
+                // 人数を取得
+                slots = responseHelper.getSlots();
+
                 if (slots.clovaNumber == null) {
                     speech = {
                         lang: 'ja',
@@ -64,6 +67,8 @@ const clovaSkillHandler = clova.Client
 
                 // todo:ユーザー名取得する
 
+                // 準備する状態にする
+                state = "ready"
                 speech = [{
                     lang: 'ja',
                     type: 'PlainText',
@@ -88,7 +93,53 @@ const clovaSkillHandler = clova.Client
 
             // ビルトインインテント。ユーザーによるインプットが肯定/否定/キャンセルのみであった場合
             case 'Clova.YesIntent':
+                if (state == 'ready') {
+                    // stateを指令モードに書き換える
+                    state = 'command'
+
+                    // TODO:DBから取ってくる
+                    speech = {
+                        lang: 'ja',
+                        type: 'PlainText',
+                        value: 'ではいきますよー、１番と２番がLINEを交換する！１０秒以内に実行してください！１，２，３，４，５，６，７，８，９，１０！実行できましたか？'
+                    }
+
+                    responseHelper.setSimpleSpeech(speech)
+                    responseHelper.setSimpleSpeech(speech, true)
+                    break;
+
+                } else if (state == 'command') {
+                    // stateを準備モードに書き換える
+                    state = 'ready'
+
+                    // TODO:DBから取ってくる
+                    speech = {
+                        lang: 'ja',
+                        type: 'PlainText',
+                        value: 'いいですね！次の命令にいきますか？'
+                    }
+
+                    responseHelper.setSimpleSpeech(speech)
+                    responseHelper.setSimpleSpeech(speech, true)
+                    break;
+
+                } else {
+                    speech = {
+                        lang: 'ja',
+                        type: 'PlainText',
+                        value: 'はいですね'
+                    }
+                    responseHelper.setSimpleSpeech(speech)
+                    responseHelper.setSimpleSpeech(speech, true)
+                }
             case 'Clova.NoIntent':
+                if (state === 'skip') {
+                  speech = [{
+                      lang: 'ja',
+                      type: 'PlainText',
+                      value: `続けます`
+                  }]
+                }
             case 'Clova.CancelIntent':
                 speech = {
                     lang: 'ja',
