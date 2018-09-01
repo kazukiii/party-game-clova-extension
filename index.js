@@ -6,12 +6,19 @@ const clovaSkillHandler = clova.Client
     .configureSkill()
     // スキルの起動リクエスト
     .onLaunchRequest(responseHelper => {
-        let request = [{
+        responseHelper.setSpeechList([{
             lang: 'ja',
             type: 'PlainText',
-            value: 'ようこそ、どのゲームにしますか？今は王様ゲームができます',
-        }]
-        responseHelper.setSpeechList(request);
+            value: 'ようこそ、パーティーゲームへ',
+        }]);
+        responseHelper.setSimpleSpeech(
+            clova.SpeechBuilder.createSpeechUrl('https://drive.google.com/open?id=12M46tWbNxiFG_DKvvdfgVPv_HdnnxauE')
+        );
+        responseHelper.setSpeechList([{
+            lang: 'ja',
+            type: 'PlainText',
+            value: 'どのゲームにしますか？今は王様ゲームができます',
+        }]);
     })
     // カスタムインテント or ビルトインインテント
     .onIntentRequest(responseHelper => {
@@ -31,12 +38,6 @@ const clovaSkillHandler = clova.Client
                     }
                     responseHelper.setSimpleSpeech(speech)
                     responseHelper.setSimpleSpeech(speech, true)
-                    // 下記でも可
-                    /*
-                    responseHelper.setSimpleSpeech(
-                      clova.SpeechBuilder.createSpeechText(`星座に誤りがあります。他の星座でお試し下さい。`)
-                    );
-                    */
                     break;
                 }
 
@@ -53,7 +54,6 @@ const clovaSkillHandler = clova.Client
             // ゲームに参加する人数を取得する
             case 'numberOfPeople':
                 // 人数を取得
-
                 if (slots.clovaNumber == null) {
                     speech = {
                         lang: 'ja',
