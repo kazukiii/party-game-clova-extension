@@ -52,8 +52,6 @@ const clovaSkillHandler = clova.Client
             // ゲームに参加する人数を取得する
             case 'numberOfPeople':
                 // 人数を取得
-                slots = responseHelper.getSlots();
-
                 if (slots.clovaNumber == null) {
                     speech = {
                         lang: 'ja',
