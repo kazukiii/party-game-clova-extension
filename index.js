@@ -158,7 +158,7 @@ const app = new express();
 //TODO
 // リクエストの検証を行う場合。環境変数APPLICATION_ID(値はClova Developer Center上で入力したExtension ID)が必須
 const clovaMiddleware = clova.Middleware({
-    applicationId: ''//process.env.APPLICATION_ID
+    applicationId: process.env.APPLICATION_ID
 });
 app.post('/clova', clovaMiddleware, clovaSkillHandler);
 
