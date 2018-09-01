@@ -11,7 +11,7 @@ const clovaSkillHandler = clova.Client
             type: 'PlainText',
             value: 'ようこそ、パーティーゲームへ'
         });
-        speechList.push(clova.SpeechBuilder.createSpeechUrl('https://drive.google.com/open?id=12M46tWbNxiFG_DKvvdfgVPv_HdnnxauE'));
+        speechList.push(clova.SpeechBuilder.createSpeechUrl('https://s3-ap-northeast-1.amazonaws.com/clova-party-game/yeah.mp3'));
         speechList.push({
             lang: 'ja',
             type: 'PlainText',
