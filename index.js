@@ -12,7 +12,7 @@ const clovaSkillHandler = clova.Client
             value: 'ようこそ、パーティーゲームへ',
         }]);
         responseHelper.setSimpleSpeech(
-            clova.SpeechBuilder.createSpeechUrl('https://drive.google.com/open?id=12M46tWbNxiFG_DKvvdfgVPv_HdnnxauE')
+            clova.SpeechBuilder.createSpeechUrl('../asset/yeah.mp3')
         );
         responseHelper.setSimpleSpeech([{
             lang: 'ja',
