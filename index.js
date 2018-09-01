@@ -1,6 +1,7 @@
 const clova = require('@line/clova-cek-sdk-nodejs');
 const express = require('express');
 
+
 const clovaSkillHandler = clova.Client
     .configureSkill()
     // スキルの起動リクエスト
@@ -42,17 +43,16 @@ const clovaSkillHandler = clova.Client
                 speech = [{
                     lang: 'ja',
                     type: 'PlainText',
-                    value: '王様ゲームですね、何人でやりますか？'
+                    value: '王様ゲームですね、何人でやりますか？',
                 }]
                 responseHelper.setSpeechList(speech)
                 responseHelper.setSpeechList(speech, true)
-
+                
                 break;
             
             // ゲームに参加する人数を取得する
             case 'numberOfPeople':
                 // 人数を取得
-                slots = responseHelper.getSlots();
 
                 if (slots.clovaNumber == null) {
                     speech = {
@@ -68,7 +68,10 @@ const clovaSkillHandler = clova.Client
                 // todo:ユーザー名取得する
 
                 // 準備する状態にする
-                state = "ready"
+                // sessionを使う
+                const sessionObject = { state: 'ready' };
+                responseHelper.setSessionAttributes(sessionObject)
+
                 speech = [{
                     lang: 'ja',
                     type: 'PlainText',
@@ -93,15 +96,22 @@ const clovaSkillHandler = clova.Client
 
             // ビルトインインテント。ユーザーによるインプットが肯定/否定/キャンセルのみであった場合
             case 'Clova.YesIntent':
-                if (state == 'ready') {
+                if(!responseHelper.getSessionAttributes()){
+                    break;   
+                }
+
+                const state = responseHelper.getSessionAttributes().state;
+                console.log(state)
+                if(state == 'ready'){
                     // stateを指令モードに書き換える
-                    state = 'command'
+                    const sessionObject = { state: 'command' };
+                    responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
                     speech = {
                         lang: 'ja',
                         type: 'PlainText',
-                        value: 'ではいきますよー、１番と２番がLINEを交換する！１０秒以内に実行してください！１，２，３，４，５，６，７，８，９，１０！実行できましたか？'
+                        value: 'ではいきますよー、１番と２番がLINEを交換する！１０秒以内に実行してください！いーち，にーい，さーん，しーい，ごーお，ろーく，なーな，はーち，きゅーう，じゅーう！実行できましたか？'
                     }
 
                     responseHelper.setSimpleSpeech(speech)
@@ -110,7 +120,8 @@ const clovaSkillHandler = clova.Client
 
                 } else if (state == 'command') {
                     // stateを準備モードに書き換える
-                    state = 'ready'
+                    const sessionObject = { state: 'ready' };
+                    responseHelper.setSessionAttributes(sessionObject)
 
                     // TODO:DBから取ってくる
                     speech = {
