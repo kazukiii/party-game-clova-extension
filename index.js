@@ -58,8 +58,8 @@ const clovaSkillHandler = clova.Client
             case 'numberOfPeople':
                 // 人数を取得
                 slots = responseHelper.getSlots();
+
                 // Slotに登録されていないゲーム名はnullになる
-                console.log(slots.clovaNumber);
                 if (slots.clovaNumber == null) {
                     speech = {
                         lang: 'ja',
@@ -105,7 +105,7 @@ const clovaSkillHandler = clova.Client
 
             // ビルトインインテント。ユーザーによるインプットが肯定/否定/キャンセルのみであった場合
             case 'Clova.YesIntent':
-                if(state == 'ready'){
+                if (state == 'ready') {
                     // stateを指令モードに書き換える
                     state = 'command'
 
@@ -120,7 +120,7 @@ const clovaSkillHandler = clova.Client
                     responseHelper.setSimpleSpeech(speech, true)
                     break;
 
-                }else if(state == 'command'){
+                } else if (state == 'command') {
                     // stateを準備モードに書き換える
                     state = 'ready'
 
@@ -135,7 +135,7 @@ const clovaSkillHandler = clova.Client
                     responseHelper.setSimpleSpeech(speech, true)
                     break;
 
-                }else{
+                } else {
                     speech = {
                         lang: 'ja',
                         type: 'PlainText',
