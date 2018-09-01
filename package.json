@@ -12,6 +12,7 @@
   "dependencies": {
     "@line/clova-cek-sdk-nodejs": "^1.0.1",
     "body-parser": "^1.18.2",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "ngrok": "^3.0.1"
   }
 }
